@@ -94,7 +94,8 @@ header {
   transform-origin: bottom;
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
-  transition: transform 1s;
+  animation-name: arrowRotation;
+  animation-duration: 1s;
 }
 
 .minutArrow {
@@ -109,6 +110,8 @@ header {
   width: 12px;
   height: 40%;
   background-color: grey;
+  animation-name: arrowRotation;
+  animation-duration: 60s;
 }
 
 .hourArrow {
@@ -123,7 +126,8 @@ header {
   width: 20px;
   height: 35%;
   background-color: black;
-  transition: transform 1s;
+  animation-name: arrowRotation;
+  animation-duration: 3600s;
 }
 
 .secondArrow {
@@ -146,6 +150,19 @@ header {
 .number span {
   transform: rotate(calc(-30deg * var(--n)));
   display: inline-block;
+}
+
+@-webkit-keyframes arrowRotation {
+  from {
+    -webkit-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  to {
+    -webkit-transform: rotate(360deg);
+    -o-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
 }
 
 @media (min-width: 1024px) {
