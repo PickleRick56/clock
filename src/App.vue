@@ -95,7 +95,8 @@ header {
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
   animation-name: arrowRotation;
-  animation-duration: 1s;
+  animation-duration: 60s;
+  animation-iteration-count: infinite;
 }
 
 .minutArrow {
@@ -111,7 +112,7 @@ header {
   height: 40%;
   background-color: grey;
   animation-name: arrowRotation;
-  animation-duration: 60s;
+  animation-duration: 720s;
 }
 
 .hourArrow {
@@ -127,7 +128,7 @@ header {
   height: 35%;
   background-color: black;
   animation-name: arrowRotation;
-  animation-duration: 3600s;
+  animation-duration: 8640s;
 }
 
 .secondArrow {
@@ -152,15 +153,11 @@ header {
   display: inline-block;
 }
 
-@-webkit-keyframes arrowRotation {
+@-webkit-keyframes arrowRotation /* Safari and Chrome */ {
   from {
-    -webkit-transform: rotate(0deg);
-    -o-transform: rotate(0deg);
-    transform: rotate(0deg);
+    transform: translate(-50%) rotate(calc(var(--rotateH) * 360deg));
   }
   to {
-    -webkit-transform: rotate(360deg);
-    -o-transform: rotate(360deg);
     transform: rotate(360deg);
   }
 }
