@@ -1,58 +1,6 @@
-<script setup>
-import HelloWorld from './components/HelloWorld.vue'
-import { ref } from 'vue'
-
-const count = ref(0)
-
-function increment() {
-  var d = new Date()
-  count.value = d
-}
-
-setInterval(increment, 200)
-
-setInterval(setClock, 1000)
-
-const hour = document.getElementById('hour')
-const minute = document.querySelector('#second')
-const second = document.querySelector('#secondr')
-const secondsRatio = ref(0)
-const minutesRatio = ref(0)
-const hoursRatio = ref(0)
-const color = ref('red')
-
-function setClock() {
-  const currentDate = new Date()
-
-  const seconds = currentDate.getSeconds() / 60
-  const minutes = (seconds + currentDate.getMinutes()) / 60
-  const hours = (minutes + currentDate.getHours()) / 12
-  secondsRatio.value += seconds
-  minutesRatio.value += minutes
-  hoursRatio.value += hours
-  console.log(currentDate.getSeconds())
-  // rotation(hour, hours)
-  // rotation(minute, minutes)
-  // rotation(second, seconds)
-}
-
-// function rotation(element, rotations) {
-//   // element.stylestyle.setProperty('--rotate', 'red')
-//   ratio.value = rotations
-// }
-
-setClock()
-</script>
-
 <template>
   <header>
-    <img alt="Vue logo" class="logo" src="./assets/logo.svg" width="125" height="125" />
-
     <div class="wrapper">
-      <HelloWorld msg="You did it!" />
-      <button @click="ratio = '30deg'">Make Blue</button>
-      <h1>{{ count }}</h1>
-
       <div class="circle" @click="increment">
         <div class="number one" style="--n: 1"><span>1</span></div>
         <div class="number two" style="--n: 2"><span>2</span></div>
@@ -75,6 +23,43 @@ setClock()
     </div>
   </header>
 </template>
+
+<script setup>
+import { onMounted, ref } from 'vue'
+
+function getClockRatios() {
+  const currentDate = new Date()
+
+  const seconds = currentDate.getSeconds() / 60
+  const minutes = currentDate.getMinutes() / 60
+  const hours = currentDate.getHours() / 24
+
+  return { seconds, minutes, hours }
+}
+
+const { seconds, minutes, hours } = getClockRatios()
+
+const secondsRatio = ref(seconds)
+const minutesRatio = ref(minutes)
+const hoursRatio = ref(hours)
+const color = ref('red')
+
+onMounted(() => {
+  console.log('mount')
+
+  function setClock() {
+    window.requestAnimationFrame(setClock)
+
+    const { seconds, minutes, hours } = getClockRatios()
+
+    secondsRatio.value = seconds
+    minutesRatio.value = minutes
+    hoursRatio.value = hours
+  }
+
+  window.requestAnimationFrame(setClock)
+})
+</script>
 
 <style scoped>
 header {
@@ -105,10 +90,11 @@ header {
   position: absolute;
   left: 50%;
   bottom: 50%;
-  transform: translate(-50%) rotate(calc(var(--rotateS) * 6deg));
+  transform: translate(-50%) rotate(calc(var(--rotateS) * 360deg));
   transform-origin: bottom;
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
+  transition: transform 1s;
 }
 
 .minutArrow {
@@ -116,7 +102,7 @@ header {
   position: absolute;
   left: 50%;
   bottom: 50%;
-  transform: translate(-50%) rotate(calc(var(--rotateM) * 6deg / 60));
+  transform: translate(-50%) rotate(calc(var(--rotateM) * 360deg));
   transform-origin: bottom;
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
@@ -130,13 +116,14 @@ header {
   position: absolute;
   left: 50%;
   bottom: 50%;
-  transform: translate(-50%) rotate(calc(var(--rotateH) * 6deg / 60 / 60));
+  transform: translate(-50%) rotate(calc(var(--rotateH) * 360deg));
   transform-origin: bottom;
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
   width: 20px;
   height: 35%;
   background-color: black;
+  transition: transform 1s;
 }
 
 .secondArrow {
